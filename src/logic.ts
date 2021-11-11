@@ -98,9 +98,24 @@ const rotate = (robot:Robot, orientation:string) => {
         throw new Error('The robot must be on the board. Please use the \'PLACE\' command first.');
     }
 
-    // if rotation is 'left', subtract 1 from orientation... if less than 0, set to orientations.length-1
-    // if rotation is 'right, add 1 to orientation... if greater than orientations.length-1, set to 0
-    console.log("ROTATE CALLED WITH: ", orientation);
+    switch(orientation) {
+        case 'LEFT':
+            if(robot.orientation - 1 < 0) {
+                robot.orientation = 3;
+            } else {
+                robot.orientation = robot.orientation - 1;
+            }
+            break;
+        case 'RIGHT':
+            if(robot.orientation + 1 > 3) {
+                robot.orientation = 0;
+            } else {
+                robot.orientation = robot.orientation + 1;
+            }
+            break;
+        default:
+            throw new Error('Rotation direction unsupported');
+    }
 }
 
 const processAction = (input:string, robot:Robot, boardSize:number) => {
