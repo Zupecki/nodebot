@@ -1,5 +1,5 @@
 import GetInput from './utils/input';
-import { PrintMenu, PrintInstructions } from './logic';
+import { PrintInstructions } from './logic';
 
 const main = async () => {
   let isPlaced = false;
