@@ -1,36 +1,22 @@
-const readline = require("readline");
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
+import GetInput from './utils/input';
 
-rl.question("Name?", function(name) {
-    rl.question("Age?", function(age) {
-        console.log(`${name}, you are ${age} years old`);
-        rl.close();
-    });
-});
+const main = async () => {
+  let isPlaced = false;
 
-rl.on("close", function() {
-    console.log("\nExit on rl.close()");
-    process.exit(0);
-});
+  while (true) {
+    // print menu options
 
-/*
-// express
-const express = require('express');
+    // get input
+    const name = await GetInput('What is your move?');
 
-const app = express();
-const port = 3000;
+    // process/validate input
+    // if !isPlaced, only accept PLACE input
 
-app.get('/', (req, res) => {
-  res.send('Hello Robot!');
-});
+    // call appropriate function on successful input
 
-app.listen(port, (err) => {
-  if(err) {
-    return console.error(err);
+    // loop until exit option is called
+    console.log(`Your name is ${name}`);
   }
-  return console.log(`server listening on ${port}`);
-});
-*/
+}
+
+main()
