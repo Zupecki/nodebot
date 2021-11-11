@@ -38,7 +38,7 @@ const actionDescriptions = {
     [EXIT]: 'EXIT - Exits the application'
 }
 
-const place = (robot:Robot, x:number, y:number, orientation:number, boardSize:number) => {
+const place = (robot:Robot, x:number, y:number, orientation:string, boardSize:number) => {
     try {
         validatePlace(x, y, orientation, boardSize);
     } catch(e) {
@@ -47,14 +47,14 @@ const place = (robot:Robot, x:number, y:number, orientation:number, boardSize:nu
 
     robot.x = x;
     robot.y = y;
-    robot.orientation = orientation;
+    robot.orientation = orientations.indexOf(orientation);
     
     if(!robot.isPlaced) {
         robot.isPlaced = true;
     }
 }
 
-const validatePlace = (x:number, y:number, orientation:number, boardSize:number):boolean => {
+const validatePlace = (x:number, y:number, orientation:string, boardSize:number):boolean => {
     if (!isPositiveInteger(x) || x > boardSize-1 || x < 0) {
         throw new Error(`X must be a number between 0 and ${boardSize-1}`)
     }
@@ -63,8 +63,8 @@ const validatePlace = (x:number, y:number, orientation:number, boardSize:number)
         throw new Error(`Y must be a number between 0 and ${boardSize-1}`)
     }
 
-    if (!isPositiveInteger(orientation) || orientation > orientations.length-1) {
-        throw new Error(`O must be a number between 0 and ${orientations.length-1}`)
+    if(!orientations.includes(orientation)) {
+        throw new Error(`O (orientation) must be one of: ${orientations.join(', ')}`);
     }
 
     return true
@@ -125,7 +125,7 @@ const processAction = (input:string, robot:Robot, boardSize:number) => {
         case PLACE:
             const [x, y, orientation] = args.split(',');
             try {
-                place(robot, Number(x), Number(y), Number(orientation), boardSize);
+                place(robot, Number(x), Number(y), orientation, boardSize);
             } catch(e) {
                 throw new Error(e.message);
             }
