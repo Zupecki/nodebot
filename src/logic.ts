@@ -24,19 +24,11 @@ const orientations = [
 ]
 
 const moves = {
-    [NORTH]: {x: 0, y: 0},
+    [NORTH]: {x: 0, y: 1},
     [EAST]: {x: 1, y: 0},
     [SOUTH]: {x: 0, y: -1},
     [WEST]: {x: -1, y: 0}
 }
-
-const actionList = [
-    PLACE,
-    MOVE,
-    LEFT,
-    RIGHT,
-    EXIT
-];
 
 const actionDescriptions = {
     [PLACE]: 'PLACE X,Y,O - Where X,Y are coordinates and O is orientation',
@@ -63,11 +55,11 @@ const place = (robot:Robot, x:number, y:number, orientation:number, boardSize:nu
 }
 
 const validatePlace = (x:number, y:number, orientation:number, boardSize:number):boolean => {
-    if (!isPositiveInteger(x) || x > boardSize-1) {
+    if (!isPositiveInteger(x) || x > boardSize-1 || x < 0) {
         throw new Error(`X must be a number between 0 and ${boardSize-1}`)
     }
 
-    if (!isPositiveInteger(y) || y > boardSize-1) {
+    if (!isPositiveInteger(y) || y > boardSize-1 || y < 0) {
         throw new Error(`Y must be a number between 0 and ${boardSize-1}`)
     }
 
@@ -83,10 +75,23 @@ const move = (robot:Robot, boardSize:number) => {
         throw new Error('The robot must be on the board. Please use the \'PLACE\' command first.');
     }
 
-    // check the objects current position and ensure the nextPosition isn't outside the bounds
-    // if move is good, update objects position accordingly
-    console.log("MOVE CALLED");
+    const [nextX, nextY] = [robot.x+moves[orientations[robot.orientation]].x, robot.y+moves[orientations[robot.orientation]].y];
+
+    try {
+        validateMove(nextX, nextY, boardSize);
+    } catch(e) {
+        throw new Error(e.message);
+    }
+
+    robot.x = nextX;
+    robot.y = nextY;
 }
+
+const validateMove = (x:number, y:number, boardSize:number) => {
+    if(x > boardSize-1 || y > boardSize-1 || x < 0 || y < 0) {
+        throw new Error('Invalid move: robot must stay on the board');
+    }
+} 
 
 const rotate = (robot:Robot, orientation:string) => {
     if(!robot.isPlaced) {
@@ -136,4 +141,4 @@ const printInstructions = () => {
     console.log();
 }
 
-export { place, move, rotate, printInstructions, processAction, Robot };
+export { place, move, rotate, printInstructions, processAction, orientations, Robot };

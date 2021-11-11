@@ -1,5 +1,5 @@
 import GetInput from './utils/input';
-import { printInstructions, processAction, Robot } from './logic';
+import { printInstructions, processAction, orientations, Robot } from './logic';
 
 const main = async () => {
   const boardSize = 5;
@@ -18,7 +18,11 @@ const main = async () => {
     try {
       processAction(choice, robot, boardSize);
     } catch(e) {
-      console.log(e.message);
+      console.log("\x1b[31m", e.message, "\x1b[0m");
+    }
+
+    if(robot.isPlaced) {
+      console.log("\x1b[32m", `Robot is at position (${robot.x},${robot.y}) and is facing ${orientations[robot.orientation]}`, "\x1b[0m");
     }
   }
 }
