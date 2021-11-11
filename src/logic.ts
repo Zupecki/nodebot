@@ -62,14 +62,23 @@ const Rotate = (object:{x:number, y:number, orientation:number}, rotation:string
     console.log("ROTATE CALLED WITH: ", rotation);
 }
 
-const ProcessAction = (input:string, constraints:{constraint:boolean, allowable:string[], constrained:string[]}) => {
+const ProcessAction = (input:string, constraints:{constrain:boolean, constrained:string[], allowed:string[]}) => {
     const [action, args] = input.toUpperCase().split(' ');
 
-    if(actionList.includes(action)) {
-        actions[action].run()();
-    } else {
+    // ensure action is valid
+    if (!actionList.includes(action)) {
         throw new Error('Action not supported');
     }
+
+    // make sure constraints are checked for available moves
+    if (constraints.constrain) {
+        if (constraints.constrained.includes(action)) {
+            throw new Error(`Action not currently allowed. Allowed actions are: ${constraints.allowed.join(', ')}`);
+        }
+    }
+
+    // call action
+    actions[action].run()(args);
 }
 
 const PrintInstructions = () => {

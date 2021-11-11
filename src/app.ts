@@ -2,7 +2,7 @@ import GetInput from './utils/input';
 import { PrintInstructions, ProcessAction } from './logic';
 
 const main = async () => {
-  let isPlaced = false;
+  let notPlaced = true;
   const boardSize = 5; // always a square
   const Robot = {
     x: -1,
@@ -11,15 +11,15 @@ const main = async () => {
   }
 
   const actionConstraints = {
-    constraint: isPlaced,
-    allowable: [
-      "PLACE",
-      "EXIT"
-    ],
+    constrain: notPlaced,
     constrained: [
       "MOVE",
       "LEFT",
       "RIGHT"
+    ],
+    allowed: [
+      "PLACE",
+      "EXIT"
     ]
   }
 
