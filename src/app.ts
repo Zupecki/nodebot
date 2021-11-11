@@ -1,37 +1,22 @@
 import GetInput from './utils/input';
-import { PrintInstructions, ProcessAction } from './logic';
+import { printInstructions, processAction, Robot } from './logic';
 
 const main = async () => {
-  let notPlaced = true;
-  const boardSize = 5; // always a square
-  const Robot = {
+  const boardSize = 5;
+  const robot:Robot = {
     x: -1,
     y: -1,
-    orientation: -1
-  }
-
-  const actionConstraints = {
-    constrain: notPlaced,
-    constrained: [
-      "MOVE",
-      "LEFT",
-      "RIGHT"
-    ],
-    allowed: [
-      "PLACE",
-      "EXIT"
-    ]
+    orientation: -1,
+    isPlaced: false
   }
 
   while (true) {
-    // print menu options
-    PrintInstructions()
+    printInstructions()
 
-    // get input
     const choice = await GetInput('What action would you like to perform?');
 
     try {
-      ProcessAction(choice, actionConstraints);
+      processAction(choice, robot, boardSize);
     } catch(e) {
       console.log(e.message);
     }

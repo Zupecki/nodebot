@@ -1,92 +1,139 @@
+import { isPositiveInteger } from './utils/validate';
+interface Robot {
+    x:number
+    y:number
+    orientation:number
+    isPlaced:boolean
+}
+
+const NORTH = 'NORTH';
+const EAST = 'EAST';
+const SOUTH = 'SOUTH';
+const WEST = 'WEST';
+const PLACE = 'PLACE';
+const MOVE = 'MOVE';
+const LEFT = 'LEFT';
+const RIGHT = 'RIGHT';
+const EXIT = 'EXIT';
+
 const orientations = [
-    "NORTH",
-    "EAST",
-    "SOUTH",
-    "WEST"
+    NORTH,
+    EAST,
+    SOUTH,
+    WEST
 ]
 
 const moves = {
-    "NORTH": {x: 0, y: 0},
-    "EAST": {x: 1, y: 0},
-    "SOUTH": {x: 0, y: -1},
-    "WEST": {x: -1, y: 0}
+    [NORTH]: {x: 0, y: 0},
+    [EAST]: {x: 1, y: 0},
+    [SOUTH]: {x: 0, y: -1},
+    [WEST]: {x: -1, y: 0}
 }
 
 const actionList = [
-    "PLACE",
-    "MOVE",
-    "LEFT",
-    "RIGHT",
-    "EXIT"
-]
+    PLACE,
+    MOVE,
+    LEFT,
+    RIGHT,
+    EXIT
+];
 
-const actions = {
-    "PLACE": {
-        run: () => Place,
-        description: 'PLACE X,Y,O - Where X,Y are coordinates and O is orientation'
-    },
-    "MOVE": {
-        run: () => Move,
-        description: 'MOVE - Moves your robot forward one position, based on its direction, if it\'s already placed on the board'
-    },
-    "LEFT": {
-        run: (object:{x:number, y:number, orientation:number}) => Rotate(object, 'left'),
-        description: 'LEFT - Rotates your robot 90 degrees to the left, facing a new orientation',
-    },
-    "RIGHT": {
-        run: (object:{x:number, y:number, orientation:number}) => Rotate(object, 'right'),
-        description: 'RIGHT - Rotates your robot 90 degrees to the right, facing a new orientation',
-    },
-    "EXIT": {
-        run: () => process.exit(0),
-        description: 'EXIT - Exits the application',
+const actionDescriptions = {
+    [PLACE]: 'PLACE X,Y,O - Where X,Y are coordinates and O is orientation',
+    [MOVE]: 'MOVE - Moves your robot forward one position, based on its direction, if it\'s already placed on the board',
+    [LEFT]: 'LEFT - Rotates your robot 90 degrees to the left, facing a new orientation',
+    [RIGHT]: 'RIGHT - Rotates your robot 90 degrees to the right, facing a new orientation',
+    [EXIT]: 'EXIT - Exits the application'
+}
+
+const place = (robot:Robot, x:number, y:number, orientation:number, boardSize:number) => {
+    try {
+        validatePlace(x, y, orientation, boardSize);
+    } catch(e) {
+        throw new Error(e.message);
+    }
+
+    robot.x = x;
+    robot.y = y;
+    robot.orientation = orientation;
+    
+    if(!robot.isPlaced) {
+        robot.isPlaced = true;
     }
 }
 
-const Place = (boardSize:number, object:{x:number, y:number, orientation:string}, options:{x:number, y:number, orientation:number}) => {
-    // check if option position exists inside of board
-    // check if direction exists inside directions
-    // if both are good, update robot
-    console.log("PLACE CALLED");
+const validatePlace = (x:number, y:number, orientation:number, boardSize:number):boolean => {
+    if (!isPositiveInteger(x) || x > boardSize-1) {
+        throw new Error(`X must be a number between 0 and ${boardSize-1}`)
+    }
+
+    if (!isPositiveInteger(y) || y > boardSize-1) {
+        throw new Error(`Y must be a number between 0 and ${boardSize-1}`)
+    }
+
+    if (!isPositiveInteger(orientation) || orientation > orientations.length-1) {
+        throw new Error(`O must be a number between 0 and ${orientations.length-1}`)
+    }
+
+    return true
 }
 
-const Move = (boardSize:number, object:{x:number, y:number, orientation:number}) => {
+const move = (robot:Robot, boardSize:number) => {
+    if(!robot.isPlaced) {
+        throw new Error('The robot must be on the board. Please use the \'PLACE\' command first.');
+    }
+
     // check the objects current position and ensure the nextPosition isn't outside the bounds
     // if move is good, update objects position accordingly
     console.log("MOVE CALLED");
 }
 
-const Rotate = (object:{x:number, y:number, orientation:number}, rotation:string) => {
+const rotate = (robot:Robot, orientation:string) => {
+    if(!robot.isPlaced) {
+        throw new Error('The robot must be on the board. Please use the \'PLACE\' command first.');
+    }
+
     // if rotation is 'left', subtract 1 from orientation... if less than 0, set to orientations.length-1
     // if rotation is 'right, add 1 to orientation... if greater than orientations.length-1, set to 0
-    console.log("ROTATE CALLED WITH: ", rotation);
+    console.log("ROTATE CALLED WITH: ", orientation);
 }
 
-const ProcessAction = (input:string, constraints:{constrain:boolean, constrained:string[], allowed:string[]}) => {
-    const [action, args] = input.toUpperCase().split(' ');
+const processAction = (input:string, robot:Robot, boardSize:number) => {
+    const [action, args=''] = input.toUpperCase().split(' ');
 
-    // ensure action is valid
-    if (!actionList.includes(action)) {
-        throw new Error('Action not supported');
+    switch (action) {
+        case PLACE:
+            const [x, y, orientation] = args.split(',');
+            try {
+                place(robot, Number(x), Number(y), Number(orientation), boardSize);
+            } catch(e) {
+                throw new Error(e.message);
+            }
+            break;
+        case MOVE:
+            move(robot, boardSize);
+            break;
+        case LEFT:
+            rotate(robot, LEFT);
+            break;
+        case RIGHT:
+            rotate(robot, RIGHT);
+            break;
+        case EXIT:
+            process.exit(0);
+        default:
+            throw new Error('Action not supported')
     }
-
-    // make sure constraints are checked for available moves
-    if (constraints.constrain) {
-        if (constraints.constrained.includes(action)) {
-            throw new Error(`Action not currently allowed. Allowed actions are: ${constraints.allowed.join(', ')}`);
-        }
-    }
-
-    // call action
-    actions[action].run()(args);
 }
 
-const PrintInstructions = () => {
+const printInstructions = () => {
     console.log('Type any of the following actions:\n');
 
-    actionList.map((actionItem, index) => {
-        console.log(`${actions[actionItem].description}${index === actionList.length-1 ? '\n' : ''}`);
-    });
+    for (const description in actionDescriptions) {
+        console.log(actionDescriptions[description]);
+    }
+
+    console.log();
 }
 
-export { Place, Move, Rotate, PrintInstructions, ProcessAction };
+export { place, move, rotate, printInstructions, processAction, Robot };
