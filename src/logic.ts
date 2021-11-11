@@ -99,14 +99,14 @@ const rotate = (robot:Robot, orientation:string) => {
     }
 
     switch(orientation) {
-        case 'LEFT':
+        case LEFT:
             if(robot.orientation - 1 < 0) {
                 robot.orientation = 3;
             } else {
                 robot.orientation = robot.orientation - 1;
             }
             break;
-        case 'RIGHT':
+        case RIGHT:
             if(robot.orientation + 1 > 3) {
                 robot.orientation = 0;
             } else {
