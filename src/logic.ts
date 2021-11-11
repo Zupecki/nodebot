@@ -59,16 +59,6 @@ const Rotate = (object:{x:number, y:number, orientation:number}, rotation:string
     // if rotation is 'right, add 1 to orientation... if greater than orientations.length-1, set to 0
 }
 
-const PrintMenu = () => {
-    console.log(
-        `PLACE X,Y,D\n`,
-        `MOVE\n`,
-        `LEFT\n`,
-        `RIGHT\n`,
-        `EXIT\n`
-    );
-}
-
 const PrintInstructions = () => {
     console.log('Type any of the following actions:\n');
 
@@ -77,4 +67,4 @@ const PrintInstructions = () => {
     });
 }
 
-export { Place, Move, Rotate, PrintMenu, PrintInstructions };
+export { Place, Move, Rotate, PrintInstructions };
