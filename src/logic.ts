@@ -31,11 +31,11 @@ const moves = {
 }
 
 const actionDescriptions = {
-    [PLACE]: 'PLACE X,Y,O - Where X,Y are coordinates and O is orientation',
-    [MOVE]: 'MOVE - Moves your robot forward one position, based on its direction, if it\'s already placed on the board',
-    [LEFT]: 'LEFT - Rotates your robot 90 degrees to the left, facing a new orientation',
-    [RIGHT]: 'RIGHT - Rotates your robot 90 degrees to the right, facing a new orientation',
-    [EXIT]: 'EXIT - Exits the application'
+    [PLACE]: '\x1b[36m'+'PLACE X,Y,O'+'\x1b[0m'+' - Where X,Y are coordinates and O is orientation',
+    [MOVE]: '\x1b[36m'+'MOVE'+'\x1b[0m'+' - Moves your robot forward one position, based on its direction, if it\'s already placed on the board',
+    [LEFT]: '\x1b[36m'+'LEFT'+'\x1b[0m'+' - Rotates your robot 90 degrees to the left, facing a new orientation',
+    [RIGHT]: '\x1b[36m'+'RIGHT'+'\x1b[0m'+' - Rotates your robot 90 degrees to the right, facing a new orientation',
+    [EXIT]: '\x1b[36m'+'EXIT'+'\x1b[0m'+' - Exits the application'
 }
 
 const place = (robot:Robot, x:number, y:number, orientation:string, boardSize:number) => {

@@ -10,6 +10,8 @@ const main = async () => {
     isPlaced: false
   }
 
+  console.log("\x1b[33m", "--- Welcome to NodeBot v1.0 ---\n", "\x1b[0m")
+
   while (true) {
     printInstructions()
 
@@ -22,7 +24,7 @@ const main = async () => {
     }
 
     if(robot.isPlaced) {
-      console.log("\x1b[32m", `Robot is at position (${robot.x},${robot.y}) and is facing ${orientations[robot.orientation]}`, "\x1b[0m");
+      console.log("\n\x1b[32m", `Robot is at position (${robot.x},${robot.y}) and is facing ${orientations[robot.orientation]}`, "\x1b[0m\n");
     }
   }
 }
