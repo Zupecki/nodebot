@@ -2,6 +2,10 @@ import GetInput from './utils/input';
 
 const main = async () => {
   let isPlaced = false;
+  let boardSize = 0; // always a square
+
+  // set boardSize to 5 for this
+  boardSize = 5;
 
   while (true) {
     // print menu options
