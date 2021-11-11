@@ -6,14 +6,10 @@ const rl = readline.createInterface({
     output: process.stdout
 });
 const GetInput = (promptText) => new Promise((resolve) => {
-    rl.question(`${promptText}\n`, function (input) {
+    rl.question(`${promptText} `, function (input) {
         rl.close();
         resolve(input);
     });
 });
-// rl.on("close", function() {
-//     console.log("\nExit on rl.close()");
-//     process.exit(0);
-// });
 exports.default = GetInput;
 //# sourceMappingURL=input.js.map

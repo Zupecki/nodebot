@@ -1,17 +1,21 @@
 import GetInput from './utils/input';
+import { PrintMenu, PrintInstructions } from './logic';
 
 const main = async () => {
   let isPlaced = false;
-  let boardSize = 0; // always a square
-
-  // set boardSize to 5 for this
-  boardSize = 5;
+  const boardSize = 5; // always a square
+  const Robot = {
+    x: -1,
+    y: -1,
+    orientation: -1
+}
 
   while (true) {
     // print menu options
+    PrintInstructions()
 
     // get input
-    const name = await GetInput('What is your move?');
+    const choice = await GetInput('What action would you like to perform?');
 
     // process/validate input
     // if !isPlaced, only accept PLACE input
@@ -19,7 +23,7 @@ const main = async () => {
     // call appropriate function on successful input
 
     // loop until exit option is called
-    console.log(`Your name is ${name}`);
+    console.log(`Your choice is ${choice}`);
   }
 }
 

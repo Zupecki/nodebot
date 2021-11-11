@@ -5,7 +5,7 @@ const rl = readline.createInterface({
 });
 
 const GetInput = (promptText:String):Promise<string> => new Promise((resolve) => {
-    rl.question(`${promptText}\n`, function(input:string) {
+    rl.question(`${promptText} `, function(input:string) {
         rl.close();
         resolve(input);
     });
