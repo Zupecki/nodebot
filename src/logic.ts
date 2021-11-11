@@ -22,23 +22,23 @@ const actionList = [
 
 const actions = {
     "PLACE": {
-        action: () => Place,
+        run: () => Place,
         description: 'PLACE X,Y,O - Where X,Y are coordinates and O is orientation'
     },
     "MOVE": {
-        action: () => Move,
+        run: () => Move,
         description: 'MOVE - Moves your robot forward one position, based on its direction, if it\'s already placed on the board'
     },
     "LEFT": {
-        action: (object:{x:number, y:number, orientation:number}) => Rotate(object, 'left'),
+        run: (object:{x:number, y:number, orientation:number}) => Rotate(object, 'left'),
         description: 'LEFT - Rotates your robot 90 degrees to the left, facing a new orientation',
     },
     "RIGHT": {
-        action: (object:{x:number, y:number, orientation:number}) => Rotate(object, 'right'),
+        run: (object:{x:number, y:number, orientation:number}) => Rotate(object, 'right'),
         description: 'RIGHT - Rotates your robot 90 degrees to the right, facing a new orientation',
     },
     "EXIT": {
-        action: () => process.exit(0),
+        run: () => process.exit(0),
         description: 'EXIT - Exits the application',
     }
 }
@@ -47,16 +47,29 @@ const Place = (boardSize:number, object:{x:number, y:number, orientation:string}
     // check if option position exists inside of board
     // check if direction exists inside directions
     // if both are good, update robot
+    console.log("PLACE CALLED");
 }
 
 const Move = (boardSize:number, object:{x:number, y:number, orientation:number}) => {
     // check the objects current position and ensure the nextPosition isn't outside the bounds
     // if move is good, update objects position accordingly
+    console.log("MOVE CALLED");
 }
 
 const Rotate = (object:{x:number, y:number, orientation:number}, rotation:string) => {
     // if rotation is 'left', subtract 1 from orientation... if less than 0, set to orientations.length-1
     // if rotation is 'right, add 1 to orientation... if greater than orientations.length-1, set to 0
+    console.log("ROTATE CALLED WITH: ", rotation);
+}
+
+const ProcessAction = (input:string, constraints:{constraint:boolean, allowable:string[], constrained:string[]}) => {
+    const [action, args] = input.toUpperCase().split(' ');
+
+    if(actionList.includes(action)) {
+        actions[action].run()();
+    } else {
+        throw new Error('Action not supported');
+    }
 }
 
 const PrintInstructions = () => {
@@ -67,4 +80,4 @@ const PrintInstructions = () => {
     });
 }
 
-export { Place, Move, Rotate, PrintInstructions };
+export { Place, Move, Rotate, PrintInstructions, ProcessAction };

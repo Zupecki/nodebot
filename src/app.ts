@@ -1,5 +1,5 @@
 import GetInput from './utils/input';
-import { PrintInstructions } from './logic';
+import { PrintInstructions, ProcessAction } from './logic';
 
 const main = async () => {
   let isPlaced = false;
@@ -8,7 +8,20 @@ const main = async () => {
     x: -1,
     y: -1,
     orientation: -1
-}
+  }
+
+  const actionConstraints = {
+    constraint: isPlaced,
+    allowable: [
+      "PLACE",
+      "EXIT"
+    ],
+    constrained: [
+      "MOVE",
+      "LEFT",
+      "RIGHT"
+    ]
+  }
 
   while (true) {
     // print menu options
@@ -17,13 +30,11 @@ const main = async () => {
     // get input
     const choice = await GetInput('What action would you like to perform?');
 
-    // process/validate input
-    // if !isPlaced, only accept PLACE input
-
-    // call appropriate function on successful input
-
-    // loop until exit option is called
-    console.log(`Your choice is ${choice}`);
+    try {
+      ProcessAction(choice, actionConstraints);
+    } catch(e) {
+      console.log(e.message);
+    }
   }
 }
 
