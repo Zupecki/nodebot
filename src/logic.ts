@@ -14,6 +14,7 @@ const PLACE = 'PLACE';
 const MOVE = 'MOVE';
 const LEFT = 'LEFT';
 const RIGHT = 'RIGHT';
+const REPORT = 'REPORT';
 const EXIT = 'EXIT';
 
 const orientations = [
@@ -35,6 +36,7 @@ const actionDescriptions = {
     [MOVE]: '\x1b[36m'+'MOVE'+'\x1b[0m'+' - Moves your robot forward one position, based on its direction, if it\'s already placed on the board',
     [LEFT]: '\x1b[36m'+'LEFT'+'\x1b[0m'+' - Rotates your robot 90 degrees to the left, facing a new orientation',
     [RIGHT]: '\x1b[36m'+'RIGHT'+'\x1b[0m'+' - Rotates your robot 90 degrees to the right, facing a new orientation',
+    [REPORT]: '\x1b[36m'+'REPORT'+'\x1b[0m'+' - Reports on the robot\'s current position and direction', 
     [EXIT]: '\x1b[36m'+'EXIT'+'\x1b[0m'+' - Exits the application'
 }
 
@@ -118,17 +120,21 @@ const rotate = (robot:Robot, orientation:string) => {
     }
 }
 
+const report = (robot:Robot) => {
+    if(!robot.isPlaced) {
+        throw new Error('The robot must be on the board. Please use the \'PLACE\' command first.');
+    }
+
+    console.log("\n\x1b[32m", `Robot is at position (${robot.x},${robot.y}) and is facing ${orientations[robot.orientation]}`, "\x1b[0m\n");
+}
+
 const processAction = (input:string, robot:Robot, boardSize:number) => {
     const [action, args=''] = input.toUpperCase().split(' ');
 
     switch (action) {
         case PLACE:
             const [x, y, orientation] = args.split(',');
-            try {
-                place(robot, Number(x), Number(y), orientation, boardSize);
-            } catch(e) {
-                throw new Error(e.message);
-            }
+            place(robot, Number(x), Number(y), orientation, boardSize);
             break;
         case MOVE:
             move(robot, boardSize);
@@ -138,6 +144,9 @@ const processAction = (input:string, robot:Robot, boardSize:number) => {
             break;
         case RIGHT:
             rotate(robot, RIGHT);
+            break;
+        case REPORT:
+            report(robot);
             break;
         case EXIT:
             process.exit(0);

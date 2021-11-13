@@ -22,10 +22,6 @@ const main = async () => {
     } catch(e) {
       console.log("\x1b[31m", e.message, "\x1b[0m");
     }
-
-    if(robot.isPlaced) {
-      console.log("\n\x1b[32m", `Robot is at position (${robot.x},${robot.y}) and is facing ${orientations[robot.orientation]}`, "\x1b[0m\n");
-    }
   }
 }
 
