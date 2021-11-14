@@ -1,8 +1,13 @@
 describe("Get Input", () => {
     const mockGetInput = jest.fn((promptText) => {
         return new Promise((resolve, reject) => {
-            resolve([promptText, 'this is my input']);
-            reject(new Error('get input failed'));
+            const getInput = 'this is my input';
+
+            if(getInput.length > 0) {
+                resolve([promptText, 'this is my input']);
+            } else {
+                reject(new Error('get input failed'));
+            }
         });
     });
 
