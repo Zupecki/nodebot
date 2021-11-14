@@ -6,8 +6,11 @@ const rl = readline.createInterface({
 
 const GetInput = (promptText:String):Promise<string> => new Promise((resolve, reject) => {
     rl.question(`${promptText} `, function(input:string) {
-        resolve(input);
-        reject(new Error('input failed to be captured from user'));
+        if(input.length > 0) {
+            resolve(input);
+        } else {
+            reject(new Error('input failed to be captured from user'));
+        }
     });
 });
 
