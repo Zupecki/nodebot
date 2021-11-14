@@ -1,9 +1,14 @@
 describe("Get Input", () => {
     const mockGetInput = jest.fn((promptText) => {
-        return[promptText, 'this is my input']
+        return new Promise((resolve, reject) => {
+            resolve([promptText, 'this is my input']);
+            reject(new Error('get input failed'));
+        });
     });
 
-    test("it should get input", () => {
-        expect(mockGetInput('please type some input')).toEqual(['please type some input', 'this is my input']);
+    test('it should get input', () => {
+        return mockGetInput('this is my prompt').then(data => {
+            expect(data).toStrictEqual(['this is my prompt', 'this is my input']);
+        });
     });
 });

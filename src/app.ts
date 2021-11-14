@@ -15,10 +15,14 @@ const main = async () => {
   while (true) {
     printInstructions()
 
-    const choice = await GetInput('What action would you like to perform?');
-
     try {
-      processAction(choice, robot, boardSize);
+      const choice = await GetInput('What action would you like to perform?');
+
+      try {
+        processAction(choice, robot, boardSize);
+      } catch(e) {
+        console.log("\x1b[31m", e.message, "\x1b[0m");
+      }
     } catch(e) {
       console.log("\x1b[31m", e.message, "\x1b[0m");
     }
