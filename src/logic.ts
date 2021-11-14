@@ -54,6 +54,8 @@ const place = (robot:Robot, x:number, y:number, orientation:string, boardSize:nu
     if(!robot.isPlaced) {
         robot.isPlaced = true;
     }
+
+    return robot;
 }
 
 const validatePlace = (x:number, y:number, orientation:string, boardSize:number):boolean => {
@@ -87,6 +89,8 @@ const move = (robot:Robot, boardSize:number) => {
 
     robot.x = nextX;
     robot.y = nextY;
+
+    return robot;
 }
 
 const validateMove = (x:number, y:number, boardSize:number) => {
@@ -118,6 +122,8 @@ const rotate = (robot:Robot, orientation:string) => {
         default:
             throw new Error('Rotation direction unsupported');
     }
+
+    return robot;
 }
 
 const report = (robot:Robot) => {
@@ -125,7 +131,11 @@ const report = (robot:Robot) => {
         throw new Error('The robot must be on the board. Please use the \'PLACE\' command first.');
     }
 
-    console.log("\n\x1b[32m", `Robot is at position (${robot.x},${robot.y}) and is facing ${orientations[robot.orientation]}`, "\x1b[0m\n");
+    const report = `\n\x1b[32mRobot is at position (${robot.x},${robot.y}) and is facing ${orientations[robot.orientation]}\x1b[0m\n`;
+
+    console.log(report);
+
+    return report;
 }
 
 const processAction = (input:string, robot:Robot, boardSize:number) => {
@@ -165,4 +175,4 @@ const printInstructions = () => {
     console.log();
 }
 
-export { place, move, rotate, printInstructions, processAction, orientations, Robot };
+export { place, move, rotate, report, printInstructions, processAction, orientations, Robot };
